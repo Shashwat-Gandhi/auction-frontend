@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import AuctionsPage from "./pages/AuctionsPage";
 
 function Home() {
   return (
@@ -10,14 +11,6 @@ function Home() {
   );
 }
 
-function Auctions() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Live Auctions</h1>
-      <p className="mt-2">Here is a list of current auctions.</p>
-    </div>
-  );
-}
 
 function Dashboard() {
   return (
@@ -41,7 +34,7 @@ function App() {
       <main className="min-h-screen bg-gray-100 p-6">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/auctions" element={<Auctions />} />
+          <Route path="/auctions" element={<AuctionsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </main>
