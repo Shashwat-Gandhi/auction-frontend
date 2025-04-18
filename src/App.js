@@ -1,27 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import DashboardPage from "./pages/DashboardPage";
 import AuctionsPage from "./pages/AuctionsPage";
-
-function Home() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Auction Platform</h1>
-      <p className="mt-2">Welcome to the auction platform. Browse and bid on live auctions.</p>
-    </div>
-  );
-}
-
-
-function Dashboard() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-      <p className="mt-2">View your activity here.</p>
-    </div>
-  );
-}
+import LoginPage from "./pages/LoginPage";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  const handleLogin = (username) => setUser(username);
+  const handleLogout = () => setUser(null);
+
   return (
     <Router>
       <header className="bg-gray-800 text-white p-4">
@@ -29,13 +19,26 @@ function App() {
           <Link to="/" className="hover:underline">Home</Link>
           <Link to="/auctions" className="hover:underline">Auctions</Link>
           <Link to="/dashboard" className="hover:underline">Dashboard</Link>
+          {user ? (
+            <button onClick={handleLogout} className="hover:underline">Logout ({user})</button>
+          ) : (
+            <Link to="/login" className="hover:underline">Login</Link>
+          )}
         </nav>
       </header>
       <main className="min-h-screen bg-gray-100 p-6">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/auctions" element={<AuctionsPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute user={user}>
+                <DashboardPage />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </main>
     </Router>
